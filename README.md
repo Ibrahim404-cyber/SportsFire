@@ -1,234 +1,118 @@
-```markdown
-# 🏀 SportsFire – Live Sports Streaming App
+🏀 SportsFire – Live Sports Streaming App
 
-**SportsFire** is a next‑generation Android application that brings live cricket, football, and other sports streaming to your phone and Android TV. It features real‑time match updates, a rich channel list, dynamic banners, and an immersive player with quality controls – all powered by **Supabase** and **ExoPlayer**.
+SportsFire is a modern Android application for streaming live cricket, football, and other sports. It works on phones and Android TV, with real‑time updates, an adaptive video player, and a beautiful glassmorphism UI.
 
-![Platform](https://img.shields.io/badge/platform-Android-green.svg)
-![Min SDK](https://img.shields.io/badge/minSDK-24%20(Android%207.0)-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+https://img.shields.io/badge/platform-Android-green.svg
+https://img.shields.io/badge/minSDK-24%20(Android%207.0)-blue.svg
 
 ---
 
-## ✨ Features
+✨ Key Features
 
-| Category | Description |
-|----------|-------------|
-| 🎬 **Live Streaming** | Watch live cricket, football, and other sports with low‑latency HLS / MP4 streams. |
-| 📺 **Live TV Channels** | Browse sports, news, and entertainment channels. |
-| 🏟️ **Featured Matches** | Carousel of live & upcoming matches with auto‑scrolling. |
-| 🔔 **Real‑time Updates** | Match status and channels refresh instantly via Supabase Realtime WebSocket. |
-| 📱 **Android TV Support** | Leanback UI with D‑Pad navigation, focused cards, and fullscreen playback. |
-| 🎚️ **Quality Selection** | Choose between Auto, 1080p, 720p, 480p, 360p, 240p (adaptive bitrate). |
-| 🧹 **Cache Management** | Clear Glide image cache from settings. |
-| 📊 **Live Viewer Counter** | Increment/decrement live viewers via Supabase RPC. |
-| 🎨 **Glassmorphism UI** | Modern design with gradients, chips, and smooth animations. |
-
----
-
-## 🛠️ Tech Stack
-
-- **Language**: Kotlin
-- **UI**: XML + Material Design, Leanback (for TV)
-- **Networking**: Retrofit + OkHttp (Supabase REST API)
-- **Realtime**: Custom WebSocket client (Supabase Realtime)
-- **Video Player**: ExoPlayer with adaptive streaming support
-- **Image Loading**: Glide (with disk caching)
-- **Architecture**: MVVM (ViewModel + LiveData)
-- **Dependency Injection**: Manual (no DI framework)
-- **Data Persistence**: SharedPreferences + Gson
+· Live match & channel streaming (HLS / MP4)
+· Real‑time match status updates via WebSocket
+· Android TV leanback interface with D‑Pad navigation
+· Adaptive quality selection (Auto / 1080p / 720p / 480p / 360p / 240p)
+· Live viewer counter
+· Dynamic home banners (auto‑scroll)
+· Channel filtering by category (Sports, News, Entertainment)
+· Offline caching for channels & matches
+· Clear image cache from settings
+· Fully immersive player with gesture controls (double‑tap to seek)
 
 ---
 
-## 📦 Project Structure
+🛠️ Tech Stack (Overview)
 
-```
-
-app/src/main/java/com/injoysportsfire/bd/
-├── adapter/                 # RecyclerView adapters (Banner, Channel, Match, Trending)
-├── data/
-│   ├── api/                 # Retrofit client, SupabaseApi interface, Realtime WebSocket
-│   ├── model/               # Data classes (Banner, Channel, Match)
-│   └── repository/          # ChannelRepository, MatchRepository
-├── tv/                      # Android TV specific code
-│   ├── TvBrowseFragment.kt
-│   ├── TvMainActivity.kt
-│   └── presenter/           # Leanback card presenters
-├── ui/
-│   ├── channels/            # ChannelsFragment + ViewModel
-│   ├── home/                # HomeFragment + ViewModel
-│   ├── player/              # PlayerActivity (ExoPlayer + gesture controls)
-│   └── settings/            # SettingsFragment
-├── utils/                   # Constants, DeviceUtils, ImageUrlUtil, NetworkUtils, SharedPrefManager
-├── MainActivity.kt          # Bottom navigation + NavController
-└── SportsfireApp.kt         # Application class for warm‑up requests
-
-```
+Layer Technology
+Language Kotlin
+UI XML + Material Design / Leanback
+Networking Retrofit + OkHttp
+Realtime Custom WebSocket client
+Video ExoPlayer
+Images Glide
+Architecture MVVM (ViewModel + LiveData)
+Storage SharedPreferences + Gson
 
 ---
 
-## 🚀 Getting Started
+🚀 Getting Started (Public)
 
-### 1. Prerequisites
+1. Prerequisites
 
-- Android Studio Hedgehog or later
-- JDK 11+
-- A **Supabase** project (free tier works)
-- Android device / emulator with API 24+ (Android 7.0)
+· Android Studio Hedgehog or newer
+· JDK 11+
+· A Supabase project (or any backend that provides a REST API and realtime events)
 
-### 2. Clone the repository
+2. Clone & configure
 
 ```bash
 git clone https://github.com/yourusername/sportsfire.git
-cd sportsfire
 ```
 
-3. Set up Supabase
-
-Create a Supabase project and set up the following tables:
-
-Table matches
-
-Column Type Description
-id uuid (PK) Primary key
-title text Match title (e.g. "IND vs AUS")
-sport_type text "cricket", "football"
-thumbnail_url text Image URL
-stream_url text HLS / MP4 stream URL
-status text "live" or "upcoming"
-start_time timestamptz Match start time
-created_at timestamptz Default: now()
-current_viewers int Default: 0
-
-Table channels
-
-Column Type Description
-id uuid (PK) Primary key
-name text Channel name
-logo_url text Logo image URL
-stream_url text Stream URL
-category text "sports", "news", "entertainment"
-is_active boolean Enable/disable channel
-
-Table banners
-
-Column Type Description
-id int (PK) Auto‑increment
-title text Banner title
-image_url text Banner image URL
-stream_url text Link to stream / match
-is_active boolean Enable/disable banner
-display_order int Sort order (ascending)
-
-RPC Functions (PostgreSQL)
-
-Create two functions to safely update current_viewers:
-
-```sql
--- Increment
-CREATE OR REPLACE FUNCTION increment_live_viewer(match_id text)
-RETURNS void AS $$
-BEGIN
-  UPDATE matches
-  SET current_viewers = current_viewers + 1
-  WHERE id = match_id::uuid AND status = 'live';
-END;
-$$ LANGUAGE plpgsql;
-
--- Decrement
-CREATE OR REPLACE FUNCTION decrement_live_viewer(match_id text)
-RETURNS void AS $$
-BEGIN
-  UPDATE matches
-  SET current_viewers = current_viewers - 1
-  WHERE id = match_id::uuid AND current_viewers > 0;
-END;
-$$ LANGUAGE plpgsql;
-```
-
-⚠️ Then enable Realtime for matches and channels tables in the Supabase dashboard.
-
-4. Configure API keys
-
-Open utils/Constants.kt and replace the placeholder values with your Supabase credentials:
+Open the project and update the API endpoints in utils/Constants.kt:
 
 ```kotlin
 const val SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"
-const val SUPABASE_ANON_KEY = "your-anon-key"
+const val SUPABASE_ANON_KEY = "your-public-anon-key"
 ```
 
-Do not commit your keys to public repositories. Use local properties or secrets.
+⚠️ Never commit real keys. Use local properties or environment variables.
 
-5. Build & Run
+3. Backend setup (example schema)
 
-· Open the project in Android Studio.
-· Sync Gradle (use File → Sync Project with Gradle Files).
-· Connect a device or start an emulator.
-· Press Run (green triangle).
+Create the following tables in your database:
+
+· matches – id, title, sport_type, thumbnail_url, stream_url, status, start_time, current_viewers
+· channels – id, name, logo_url, stream_url, category, is_active
+· banners – id, title, image_url, stream_url, is_active, display_order
+
+Enable realtime for the matches and channels tables.
+
+4. Build & run
+
+Connect a device / emulator (API 24+) and click Run in Android Studio.
 
 ---
 
-📺 Android TV Build
+📺 Android TV Mode
 
-The app automatically detects TV devices (using UiModeManager) and switches to Leanback UI.
-To test on a TV emulator:
-
-1. Create an AVD with Android TV (1080p) skin.
-2. Run the app – the launcher will show the TvMainActivity instead of the mobile bottom‑nav layout.
+The app automatically switches to a Leanback interface when run on an Android TV device.
+Test with an Android TV emulator (e.g., Android TV (1080p)).
 
 ---
 
 🎮 Player Controls
 
-Gesture / Key Action
-Tap (mobile) / OK (TV) Show/hide controls
-Double‑tap left/right Seek ±10 seconds
-D‑Pad left/right Seek ±10 seconds
+Action Result
+Tap / OK button Show/hide controls
+Double‑tap left / right side Seek ±10 seconds
+D‑Pad left / right Seek ±10 seconds
 D‑Pad up Show controls
-Play/Pause button Play / pause stream
-Back / B button Exit player
-Quality icon Open resolution picker
+Play/Pause button Play / pause
+Back button Exit player
+Quality icon Open resolution menu
 
 ---
 
-🧪 Known Limitations
+🧹 Clearing Cache
 
-· Stream sources must be CORS‑enabled and support HTTPS.
-· No built‑in DRM or license handling.
-· Real‑time WebSocket may reconnect with a 5‑second delay on network loss.
-· View counter RPC calls are fire‑and‑forget – no retry on failure.
-
----
-
-🛠️ Troubleshooting
-
-Issue Solution
-tag name can't be blank (GitHub Release) Create a Git tag first: git tag v1.0 && git push origin v1.0
-No streams play Check stream URL in Supabase – must be a direct .m3u8 or .mp4 URL.
-Banners not showing Verify is_active = true and display_order in Supabase.
-WebSocket disconnects Ensure Supabase Realtime is enabled for the tables.
+Go to Settings → Clear Cache to free up storage used by images.
 
 ---
 
 📄 License
 
-This project is licensed under the MIT License.
-You are free to use, modify, and distribute it with attribution.
+This project is licensed under the MIT License – feel free to use and modify it with attribution.
 
 ---
 
-🙏 Acknowledgements
+🙏 Credits
 
-· ExoPlayer by Google
-· Supabase – Open‑source Firebase alternative
-· Glide for image loading
-· Material Design Components
+· ExoPlayer – Video playback
+· Supabase – Backend & realtime
+· Glide – Image loading
 
 ---
-
-📬 Contact
-
-For issues or suggestions, please open an issue on GitHub or reach out to the development team.
 
 Enjoy streaming with SportsFire! 🔥
-
-```
