@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SportsFire – Live Sports Streaming</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #f0f0f0;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #E53935, #FF6F00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #E53935, #FF6F00);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(229, 57, 53, 0.25);
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(229, 57, 53, 0.4);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #fff;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #E53935;
+        }
+
+        .glass-card {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 32px;
+            padding: 28px 24px;
+            transition: all 0.25s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(229, 57, 53, 0.5);
+            transform: translateY(-6px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(145deg, #E53935, #FF6F00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .screenshot-mock {
+            background: linear-gradient(145deg, #1a1a24, #101018);
+            border-radius: 32px;
+            padding: 12px;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mock-phone {
+            background: #0f0f17;
+            border-radius: 28px;
+            padding: 12px 8px;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .mock-screen {
+            background: #1e1e2a;
+            border-radius: 20px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .match-card-mock {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 8px 12px;
+        }
+
+        .pill {
+            background: #E53935;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #b0b0c0;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin: 70px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 60px 0 30px;
+        }
+
+        .demo-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+        }
+
+        .demo-text {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .demo-mockup {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 80px;
+            padding: 40px 0 30px;
+            text-align: center;
+            color: #7e7e8c;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .container { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Navigation -->
+    <nav>
+        <div class="logo"><span class="gradient-text">SportsFire</span> 🔥</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="#" style="color:#ccc; text-decoration: none;">Features</a>
+            <a href="#" style="color:#ccc; text-decoration: none;">TV</a>
+            <a href="#" style="color:#ccc; text-decoration: none;">Download</a>
+        </div>
+    </nav>
+
+    <!-- Hero section -->
+    <div class="hero">
+        <h1>Ultimate <span class="gradient-text">Sports Streaming</span><br>For Phone & TV</h1>
+        <p>Watch cricket, football, live TV channels with real‑time updates, smooth ExoPlayer, and Android TV support.</p>
+        <div class="badge-group">
+            <!-- Phone APK download button -->
+            <a href="https://github.com/Ibrahim404-cyber/SportsFire/releases/download/FirstReleaseVersion/SportsFire.apk" class="btn-primary" download>
+                <i class="fab fa-android"></i> Download APK
+            </a>
+            <!-- Android TV button now also points to the same APK -->
+            <a href="https://github.com/Ibrahim404-cyber/SportsFire/releases/download/FirstReleaseVersion/SportsFire.apk" class="btn-outline" download>
+                <i class="fas fa-tv"></i> Android TV
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature grid -->
+    <div class="feature-grid">
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-video"></i></div>
+            <h3>Live Matches & Channels</h3>
+            <p style="color:#b9b9cc;">Cricket, Football, Live TV – all in one place. Low‑latency HLS streams.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <h3>Real‑time Updates</h3>
+            <p style="color:#b9b9cc;">Match status & viewer count changes instantly via Supabase Realtime.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-robot"></i></div>
+            <h3>Android TV Optimized</h3>
+            <p style="color:#b9b9cc;">Leanback UI, D‑Pad navigation, fullscreen player with remote control support.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+            <h3>Adaptive Quality</h3>
+            <p style="color:#b9b9cc;">Auto / 1080p / 720p / 480p – switch during playback.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <h3>Live Viewer Counter</h3>
+            <p style="color:#b9b9cc;">See how many people are watching the same match in real time.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+            <h3>Glassmorphism UI</h3>
+            <p style="color:#b9b9cc;">Modern design with smooth animations, banners, and channel filters.</p>
+        </div>
+    </div>
+
+    <!-- Demo Preview (mockup) -->
+    <div class="section-title">📱 App Preview</div>
+    <div class="demo-area">
+        <div class="demo-text">
+            <h2 style="font-size: 1.8rem;">Seamless <span class="gradient-text">watching experience</span> everywhere</h2>
+            <ul style="margin-top: 24px; list-style: none;">
+                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color:#E53935; margin-right: 12px;"></i> Double‑tap to seek ±10s</li>
+                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color:#E53935; margin-right: 12px;"></i> Gesture controls & immersive mode</li>
+                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color:#E53935; margin-right: 12px;"></i> Live badges & upcoming matches row</li>
+                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle" style="color:#E53935; margin-right: 12px;"></i> Admin‑controlled banners via backend</li>
+            </ul>
+            <div style="margin-top: 30px;">
+                <a href="https://github.com/Ibrahim404-cyber/SportsFire/releases/download/FirstReleaseVersion/SportsFire.apk" class="btn-primary" style="background: rgba(255,255,255,0.08); box-shadow: none; border: 1px solid #E53935; text-decoration: none;" download>
+                    <i class="fas fa-tv"></i> Try TV Demo
+                </a>
+            </div>
+        </div>
+        <div class="demo-mockup">
+            <div class="screenshot-mock">
+                <div class="mock-phone">
+                    <div class="mock-screen">
+                        <div style="display: flex; justify-content: space-between;"><span style="font-weight: bold;">🏏 IND vs AUS</span><span class="pill">LIVE</span></div>
+                        <div class="match-card-mock"><i class="fas fa-futbol" style="color:#E53935;"></i> <span>Football: Barcelona vs Madrid</span> <span style="margin-left: auto; font-size:12px;">🔥 2.3k</span></div>
+                        <div class="match-card-mock"><i class="fas fa-basketball-ball" style="color:#FF6F00;"></i> <span>NBA: Lakers vs Warriors</span> <span style="margin-left: auto; font-size:12px;">Upcoming</span></div>
+                        <div style="background: #00000030; border-radius: 12px; padding: 8px; text-align: center; font-size: 12px;">🎬 ExoPlayer ready</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 12px; font-size: 13px;">Live matches • Trending channels</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Android TV specific -->
+    <div class="section-title">📺 Designed for Android TV</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 40px;">
+        <div class="glass-card" style="text-align: center; width: 220px;">
+            <i class="fas fa-d-pad" style="font-size: 2rem; color:#E53935;"></i>
+            <h4 style="margin: 12px 0;">Full D‑Pad</h4>
+            <p style="font-size: 0.85rem;">Navigation & playback control</p>
+        </div>
+        <div class="glass-card" style="text-align: center; width: 220px;">
+            <i class="fas fa-hourglass-half" style="font-size: 2rem; color:#FF6F00;"></i>
+            <h4 style="margin: 12px 0;">Auto‑scroll banners</h4>
+            <p style="font-size: 0.85rem;">Featured matches carousel</p>
+        </div>
+        <div class="glass-card" style="text-align: center; width: 220px;">
+            <i class="fas fa-microphone-alt" style="font-size: 2rem; color:#E53935;"></i>
+            <h4 style="margin: 12px 0;">Future: Voice search</h4>
+            <p style="font-size: 0.85rem;">Coming in v2.0</p>
+        </div>
+    </div>
+
+    <!-- Upcoming features teaser (future roadmap) -->
+    <div class="glass-card" style="background: linear-gradient(145deg, #12121c, #0a0a12); text-align: center; margin: 20px 0;">
+        <h3><i class="fas fa-rocket" style="margin-right: 8px;"></i> What's next?</h3>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-top: 20px;">
+            <span><i class="fas fa-users"></i> User accounts</span>
+            <span><i class="fas fa-chromecast"></i> Chromecast support</span>
+            <span><i class="fas fa-bell"></i> Push notifications</span>
+            <span><i class="fas fa-language"></i> Multi‑language UI</span>
+            <span><i class="fas fa-download"></i> Offline downloads</span>
+        </div>
+    </div>
+
+    <!-- Footer and CTA -->
+    <footer>
+        <p style="margin-bottom: 12px;">⚡ <strong>SportsFire</strong> – Open source sports streaming app for Android & Android TV</p>
+        <p style="font-size: 0.85rem;">© 2026 • Demo preview • <a href="#" style="color:#E53935; text-decoration: none;">GitHub Repository</a> • <a href="#" style="color:#E53935; text-decoration: none;">Releases</a></p>
+        <div style="margin-top: 18px;">
+            <i class="fab fa-github" style="margin: 0 8px; font-size: 1.4rem; opacity: 0.7;"></i>
+            <i class="fab fa-android" style="margin: 0 8px; font-size: 1.4rem; opacity: 0.7;"></i>
+            <i class="fab fa-google-play" style="margin: 0 8px; font-size: 1.4rem; opacity: 0.7;"></i>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // optional: no extra alerts needed since both buttons now directly download
+</script>
+</body>
+</html>
